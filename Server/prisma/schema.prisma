@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Token {
+  id         String   @id @default(uuid())
+  mint       String   @unique // token address
+  name       String?
+  symbol     String?
+  decimals   Int?
+  totalSupply String? // use string to avoid precision issues
+  logoUrl    String?  // optional URL to the token image
+  coingeckoId String? // optional mapping to external API
+  chain       String   // e.g., 'ethereum', 'solana'
+  createdAt  DateTime @default(now())
+}
+
+model User {
+  id          String   @id @default(uuid())
+  wallet      String   @unique // Solana public key
+  nonce       String            // for login challenge
+  username    String?           // optional display name
+  profileImg  String?           // pfp, optional
+  isVerified  Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AuthRequest {
+  id        String   @id @default(cuid())
+  publicKey String   @unique
+  nonce     String
+  createdAt DateTime @default(now())
+}
