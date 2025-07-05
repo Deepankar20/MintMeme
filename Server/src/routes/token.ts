@@ -132,7 +132,7 @@ tokenRouter.post("/create", async (req: AuthRequest, res: Response) => {
     if (!transactionSignature) {
       res.status(400).json({ msg: "Error on creating token", data: null });
       return;
-    }
+    }66
 
     const token = await prisma.token.create({
       data: {
